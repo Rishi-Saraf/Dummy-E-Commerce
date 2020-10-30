@@ -1,0 +1,24 @@
+extends ../layouts/main-layout.pug 
+
+block css
+    link(rel="stylesheet", href="../css/main.css")
+    link(rel="stylesheet", href="../css/index.css")
+    
+block content
+    .everything
+        if prods.length > 0
+            each product in prods
+                .grid
+                    .prod-image
+                        img(src = (product.imageUrl) alt="An Image")
+                    h2.title #{product.title}
+                    h4.price #{product.price} INR
+                    p.description #{product.desc}
+                    .buttons-horizontal-align   
+                        form(action=("/admin/edit-product/"+product.id), method="get")
+                            button(type="submit" name="edit" value="true") Edit Product
+                        form(action="/admin/delete", method="post")
+                            input(type="hidden", name="productId" value=product.id)
+                            button Delete Product
+        else
+            h1.error NO PRODUCTS

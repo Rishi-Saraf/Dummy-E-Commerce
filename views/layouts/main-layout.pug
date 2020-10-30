@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title #{title}
+        link(rel="stylesheet", href="css/main.css")
+        block css
+        
+    body
+        header
+            nav.navbar
+                ul.nav-ul
+                    li
+                        a(href='/' class=(path==='/'?'active':'')) Shop
+                    li
+                        a(href='/admin/add-product' class=(path==='admin/add-product'?'active':'')) Admin
+                    li
+                        a(href='/cart' class=(path==='cart'?'active':'')) Cart
+                    li
+                        a(href='/checkout' class=(path==='checkout'?'active':'')) Checkout
+                    li
+                        a(href=('/admin/products') class=(path==='admin/products'?'active':'')) Admin-Products        
+        block content

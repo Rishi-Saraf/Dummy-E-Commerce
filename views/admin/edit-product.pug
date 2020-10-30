@@ -1,0 +1,33 @@
+extends ../layouts/main-layout.pug
+
+block css
+    link(rel="stylesheet", href="../css/main.css")
+    link(rel='stylesheet' href='../css/add-product.css')   
+    link(rel="stylesheet", href="../../css/main.css")
+    link(rel='stylesheet' href='../../css/add-product.css')
+
+block content
+    form(id="main" action=edit==='true'?'/admin/edit-product':'/admin/add-product', method="post")
+        label(for="title") Your Product's name
+        input(type="text" name="title" value=edit==='true'?product.title:"")
+
+        label(for="price") Price 
+        input(type="number" name="price" step="0.01" value=edit==="true"?product.price:"")
+
+        if edit==="true"
+            label(for="desc") Description of your product
+            <textarea name="desc", cols="30" ,rows="10">#{product.desc}</textarea>
+
+        else
+            label(for="desc") Description of your product
+            <textarea name="desc", cols="30" ,rows="10"></textarea>
+
+
+        label(for="img") Enter The Image of your product
+        input(type="text" name="img" value=edit==="true"?product.imageUrl:"")
+        
+        if edit==="true"
+            input(type="hidden", name="productId" value=product.id)
+
+        button#add-btn(type="submit") Add product 
+

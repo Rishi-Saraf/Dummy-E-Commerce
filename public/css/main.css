@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto+Slab:wght@500&display=swap');
+
+/* font-family: 'Anton', sans-serif; */
+/* font-family: 'Roboto Slab', serif; */
+
+*{
+    font-family: 'Roboto Slab', serif;
+    margin: 0px;
+    padding: 0px;
+}
+
+.nav-ul{
+    display: flex;
+    justify-content: start;    
+}
+
+.nav-ul li{
+    list-style: none;
+}
+
+li a{
+    text-decoration : none;
+    padding:15px;
+    color:black;
+}
+
+li{
+    padding: 5px
+}
+
+.active{
+    color: whitesmoke;
+}
+
+.navbar{
+    background-color:darkcyan;
+    padding: 20px;
+}
+
+a:hover{
+    background-color: black;
+    color: antiquewhite;
+}
+
+.active:hover{
+    background-color: antiquewhite;
+    color: black;
+}
+
+btn{
+    padding: 10px 30px;
+    width: 15%;
+    margin: 10px auto;
+}

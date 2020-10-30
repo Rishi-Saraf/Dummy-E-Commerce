@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto+Slab:wght@500&display=swap');
+
+.prod-image img{
+    height: 200px;
+    margin: auto;    
+}
+
+.grid *{
+    padding: 10px;
+}
+
+.grid{
+    width: 60%;
+    margin: 35px auto;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    border: solid orangered 1px;
+    text-align: center;
+}
+
+.description{
+    border: solid cyan 1px;
+}
+
+.error{
+    padding-top: 20px;
+    font-family: 'Anton', sans-serif;
+}
+
+.everything{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.detail{
+    color: black;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+.detail:hover{
+    background-color: white;
+    color: crimson;
+}

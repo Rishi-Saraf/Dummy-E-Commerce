@@ -1,0 +1,23 @@
+extends ../layouts/main-layout.pug 
+
+block css
+    link(rel="stylesheet", href="css/index.css")
+    
+block content
+    .everything
+        if prods.length > 0
+            each product in prods
+                .grid
+                    .prod-image
+                        img(src = (product.imageUrl) alt="An Image")
+                    h2.title #{product.title}
+                    h4.price #{product.price} INR
+                    p.description #{product.desc}
+                    .buttons-horizontal-align   
+                        form.atc-form(action="/cart", method="post")
+                            button.add-to-cart Add to Cart
+                            input(type="hidden", name="productId" value=product.id)
+                        a.detail(href=("/product/"+product.id)) Details
+                        
+        else
+            h1.error NO PRODUCTS

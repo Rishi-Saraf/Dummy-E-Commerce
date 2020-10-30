@@ -1,0 +1,23 @@
+extends ../layouts/main-layout.pug 
+    
+block css
+        link(rel="stylesheet", href="../css/main.css")
+
+block content
+        if cartProducts.length > 0
+                for product in cartProducts
+                        br
+                        h1 #{product.productData.title}
+                        h3 #{product.productData.price}
+                        h4 Qty : #{product.qty}
+                        br
+                        form(action="/delete-cart", method="post")
+                                input(type="hidden" name="productId" value=product.productData.id)
+                                input(type="hidden" name="price" value=product.productData.price)
+                                button(type="submit") Delete Product
+                        br
+                        hr
+                br
+                h3 Total Cost : #{totalPrice} 
+        else
+                h1 Nothing in cart currently...go get something
