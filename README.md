@@ -5,7 +5,7 @@ Run npm install before running npm start in CLI
 ```bash
 npm install
 ```
-##About 
+## About 
 An E-Commerce website in which you can sell and buy poducts
 
 ## Contributions
