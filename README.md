@@ -5,7 +5,7 @@ Run npm install before running npm start in CLI
 npm install
 ```
 ## About 
-An E-Commerce website in which you can sell and buy poducts
+A Dummy E-Commerce website
 
 ## Contributions
 Sorry but no contributions accepted
@@ -14,3 +14,6 @@ Sorry but no contributions accepted
 ```bash
 npm start
 ```
+##DataBase
+
+The DataBase used is A SQL DATABASE (Currently) i.e MySQL
