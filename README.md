@@ -14,6 +14,6 @@ Sorry but no contributions accepted
 ```bash
 npm start
 ```
-##DataBase
+## DataBase
 
 The DataBase used is A SQL DATABASE (Currently) i.e MySQL
