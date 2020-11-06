@@ -1,8 +1,8 @@
 const sequelize = require('../utils/database.js')
 
-const Sequelize : require('sequelize')
+const Sequelize = require('sequelize')
 
-const cartItem = sequelize.define(cartItem,{
+const cartItem = sequelize.define('cartItem',{
     id : {
         type : Sequelize.INTEGER,
         primaryKey : true,

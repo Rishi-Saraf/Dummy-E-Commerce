@@ -10,6 +10,8 @@ const productRoute = require('./routes/product')
 
 const user = require("./models/user.js")
 const product = require("./models/products.js")
+const cart = require("./models/cart.js")
+const cartItem = require("./models/cart-item.js")
 
 const app = express()
 
@@ -38,6 +40,9 @@ app.use('',(req,res)=>{
 
 product.belongsTo(user,{constraints : true, onDelete : 'CASCADE'})
 user.hasMany(product)
+user.hasOne(cart)
+cart.belongsToMany(product , {through : cartItem})
+product.belongsToMany(cart,{through : cartItem})
 
 sequelize.sync()
 .then(result=>{
@@ -45,9 +50,19 @@ sequelize.sync()
 })
 .then(result=>{
 	if(!result){
-		user.create({name : "Rishi Saraf", email : "RishiSaraf@gmail.com"})
+		return user.create({name : "Rishi Saraf", email : "RishiSaraf@gmail.com"})
 	}
 	return Promise.resolve(result)
+})
+.then(user=>{
+	user.getCart()
+	.then(cart=>{
+		console.log(cart)
+		if(cart){
+			return cart
+		}
+		return user.createCart()
+	})
 })
 .then(result=>{
 	// console.log(result)

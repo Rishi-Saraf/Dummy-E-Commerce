@@ -1,5 +1,6 @@
 const productModel = require('../models/products')
 const cartModel = require('../models/cart')
+const Product = require('../models/products')
 
 exports.Shop = (req,res)=>{
     productModel.findAll()
@@ -19,38 +20,67 @@ exports.Shop = (req,res)=>{
 
 exports.Cart = (req,res)=>{
     prodId = req.body.productId;
-    productClass.getProdbyId(prodId,(product)=>{
-        CartClass.addProduct(prodId,product.price)
+    var fetchedCart;
+    var newQuantity = 1;
+    req.user
+    .getCart()
+    .then(cart=>{
+        fetchedCart = cart
+        return cart.getProducts({where :  {id : prodId}})
     })
-    res.redirect('/cart')
+    .then(products=>{
+        var product;
+        if(products.length>0){
+            product = products[0]
+        }
+        if(product) {
+          oldQty = product.cartItem.qty
+          newQuantity = oldQty + 1
+          return product
+        }
+        return productModel.findByPk(prodId)
+    })
+    .then(product=>{
+        return fetchedCart.addProduct(product, {through : {qty : newQuantity}})
+    })
+    .then(data=>{
+        res.redirect('/cart')
+        console.log(newQuantity)
+    })
+    .catch(err=>console.log(err))
 }
 
 exports.getCart = (req,res)=>{
-    CartClass.getCart(cart =>{
-        const initCartProductArray = cart.products
-        productClass.fetchAll(products=>{
-            const cartProductArray = []
-            for(product of products){
-                const matchedProduct = initCartProductArray.find(prod => prod.id === product.id)
-                if(matchedProduct){
-                    cartProductArray.push({productData:product,qty:matchedProduct.qty})
-                }
-            }
-            console.log(cartProductArray)
-            const totalPrice = cart.totalPrice
-            const params = {
-                cartProducts : cartProductArray,
-                totalPrice : totalPrice,
-                title: 'shop'
-            }
-            res.render('shop/cart.pug',params)
-        })
+    req.user.getCart()
+    .then(cart=>{
+        console.log("CART PRODUCTS @ SHOP.JS GETCART FUNCTION LINE NO. 31")
+        return cart.getProducts()
     })
+    .then(products=>{
+        console.log(products)
+        params = {
+            title : 'My-Cart',
+            cartProducts : products,
+        }
+        res.render('shop/cart.pug',params)
+    })
+    .catch(err=>console.log(err))
+
 }
 
 exports.deleteCart = (req,res)=>{
     let id = req.body.productId
-    let price = req.body.price
-    CartClass.delete(id,price)
-    res.redirect('/cart')
+    req.user
+    .getCart()
+    .then(cart=>{
+       return cart.getProducts({where : {id : id}})
+    })
+    .then(products=>{
+        product = products[0]
+        return product.cartItem.destroy()
+    })
+    .then(data=>{
+        res.redirect('/cart')
+    })
+    .catch(err=>console.log(err))
 }

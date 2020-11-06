@@ -1,5 +1,4 @@
 # ECommerceWebsite
-
 ## Instructions
 Run npm install before running npm start in CLI
 ```bash
