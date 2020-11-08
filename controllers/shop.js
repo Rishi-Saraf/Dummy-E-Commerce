@@ -84,3 +84,7 @@ exports.deleteCart = (req,res)=>{
     })
     .catch(err=>console.log(err))
 }
+
+exports.getCheckout = (req,res)=>{}
+
+exports.createCheckout = (req,res)=>{}

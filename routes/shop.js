@@ -12,6 +12,9 @@ router.post('/cart',shopControl.Cart)
 
 router.post('/delete-cart',shopControl.deleteCart)
 
+router.get('/checkout',shopControl.getCheckout)
+
+router.get('/create-order',shopControl.createCheckout)
 
 module.exports = router
 
