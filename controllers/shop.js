@@ -1,6 +1,6 @@
-const productModel = require('../models/products')
 const cartModel = require('../models/cart')
 const Product = require('../models/products')
+const productModel = require('../models/products')
 
 exports.Shop = (req,res)=>{
     productModel.findAll()
@@ -11,6 +11,7 @@ exports.Shop = (req,res)=>{
             title: 'shop'
         }
         res.render('shop/index.pug',params)
+        console.log(products)
     }
     )
     .catch(
@@ -85,6 +86,53 @@ exports.deleteCart = (req,res)=>{
     .catch(err=>console.log(err))
 }
 
-exports.getCheckout = (req,res)=>{}
+exports.getCheckout = (req,res)=>{
+    req.user
+    .getOrder({include : ['products']})
+    .then(orders=>{
+        const params = {
+            orders : orders,
+            title : "Checkout"
+        }
+        res.render('shop/checkout.pug',params)
+    })
+    .catch(err=>console.log(err))
+}
 
-exports.createCheckout = (req,res)=>{}
+exports.createCheckout = (req,res)=>{
+    req.user
+    .getCart()
+    .then(Cart=>{
+        fetchedCart = Cart
+        return Cart.getProducts()
+    })
+    .then(products=>{
+        return req.user.getOrder()
+        .then(result=>{
+            console.log("RESULT")
+            console.log(result)
+            if(result==null){
+            return req.user
+            .createOrder()
+            }
+            return req.user.getOrder()
+           .then(order=>{
+                return order.addProducts(
+                    products.map(product=>{
+                    product.orderItem = {qty : product.cartItem.qty}
+                    return product
+                    })
+                )
+            })
+            .catch(err=>console.log(err))
+        })
+        .catch(err=>console.log(err))
+    })
+    .then(result=>{
+        fetchedCart.setProducts(null)
+    })
+    .then(result=>{
+        res.redirect('/checkout')
+    })
+    .catch(err=>console.log(err))
+}

@@ -1,0 +1,17 @@
+extends ../layouts/main-layout.pug
+
+block css
+
+block content
+    if orders.products.length>0
+        for order in orders.products
+            h2 #{order.title}
+            br
+            p #{order.desc}
+            br
+            p #{order.price}
+            br 
+            p #{order.orderItem.qty}
+            hr
+    else
+        p No products in your orders right now
