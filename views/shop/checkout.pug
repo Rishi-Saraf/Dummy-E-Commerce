@@ -1,17 +1,18 @@
 extends ../layouts/main-layout.pug
 
 block css
-
+    link(rel="stylesheet", href="css/orders.css")
 block content
-    if orders.products.length>0
-        for order in orders.products
-            h2 #{order.title}
-            br
-            p #{order.desc}
-            br
-            p #{order.price}
-            br 
-            p #{order.orderItem.qty}
-            hr
+    if orders.length>0
+        for order in orders
+            div.order
+                h2.orderId order id : # #{order._id}
+                for product in order.items
+                    div.order-product
+                        h2 Title : #{product.title}
+                        br
+                        p Price : #{product.price}
+                        br 
+                        p Quantity : #{product.qty}
     else
-        p No products in your orders right now
+        h2 No products

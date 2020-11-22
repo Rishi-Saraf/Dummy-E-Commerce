@@ -10,7 +10,7 @@ router.get('/cart',shopControl.getCart)
 
 router.post('/cart',shopControl.Cart)
 
-router.post('/delete-cart',shopControl.deleteCart)
+router.post('/delete-cart',shopControl.CartDelete)
 
 router.get('/checkout',shopControl.getCheckout)
 

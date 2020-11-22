@@ -1,0 +1,22 @@
+.order{
+    border: solid black 2px;
+    display : flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 7.5px;
+}
+
+.order-product{
+    border: solid gold 2px;
+    width: 50%;
+    margin : 5px;
+    display : flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center
+}
+
+.order-product *{
+    padding : 1px;
+}

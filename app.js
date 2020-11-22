@@ -1,19 +1,18 @@
-const Sequelize = require('sequelize')
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
-const sequelize = require('./utils/database')
+const mongoConnectFunc = require('./utils/database').mongoConnect
 
 const adminRoute = require('./routes/admin')
 const shopRoute = require('./routes/shop')
 const productRoute = require('./routes/product')
 
-const user = require("./models/user.js")
-const product = require("./models/products.js")
-const cart = require("./models/cart.js")
-const cartItem = require("./models/cart-item.js")
-const order = require("./models/order.js")
-const orderItem = require("./models/order-items.js")
+const userModel = require("./models/user.js")
+// const product = require("./models/products.js")
+// const cart = require("./models/cart.js")
+// const cartItem = require("./models/cart-item.js")
+// const order = require("./models/order.js")
+// const orderItem = require("./models/order-items.js")
 
 const app = express()
 
@@ -24,9 +23,9 @@ app.set('views','./views');
 app.use(express.static(path.join(__dirname,'public')));
 app.use(bodyParser.urlencoded())
 app.use((req,res,next)=>{
-	user.findByPk(1)
-	.then(result=>{
-		req.user = result
+	userModel.findById("5fb52f49d3cd7d45feada4b6")
+	.then(user=>{
+		req.user = new userModel(user.name,user.email,user.cart,user._id)
 		console.log(req.user)
 		next()
 	})
@@ -40,42 +39,11 @@ app.use('',(req,res)=>{
     res.render('404.pug')
 })
 
-product.belongsTo(user,{constraints : true, onDelete : 'CASCADE'})
-user.hasMany(product)
-user.hasOne(cart)
-cart.belongsToMany(product , {through : cartItem})
-product.belongsToMany(cart,{through : cartItem})
-order.belongsTo(user)
-user.hasOne(order)
-order.belongsToMany(product, {through : orderItem})
-product.belongsToMany(order,{through : orderItem})
-
-sequelize.sync(
-	// {force : true}
-)
-.then(result=>{
-	return user.findByPk(1)
-})
-.then(result=>{
-	if(!result){
-		return user.create({name : "Rishi Saraf", email : "RishiSaraf@gmail.com"})
+mongoConnectFunc(()=>{
+const user = userModel.findById("5fb52f49d3cd7d45feada4b6") 
+	if(!user){
 	}
-	return Promise.resolve(result)
-})
-.then(user=>{
-	user.getCart()
-	.then(cart=>{
-		console.log(cart)
-		if(cart){
-			return cart
-		}
-		return user.createCart()
+    app.listen(80,()=>{
+		console.log("APP STARTED")
 	})
 })
-.then(result=>{
-	// console.log(result)
-	const port = 80
-	app.listen(port,()=>console.log(`App started at ${port}!!!`))
-})
-.catch(err=>console.log(err))
-

@@ -16,8 +16,8 @@ block content
                     .buttons-horizontal-align   
                         form.atc-form(action="/cart", method="post")
                             button.add-to-cart Add to Cart
-                            input(type="hidden", name="productId" value=product.id)
-                        a.detail(href=("/product/"+product.id)) Details
+                            input(type="hidden", name="productId" value=product._id)
+                        a.detail(href=("/product/"+product._id)) Details
                         
         else
             h1.error NO PRODUCTS

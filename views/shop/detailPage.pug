@@ -12,8 +12,8 @@ block content
                     h2.title #{product.title}
                     h4.price #{product.price} INR
                     p.description #{product.desc} 
-                    p.user Created by #{userName}
+                    p Made by #{user.name}
                     .buttons-horizontal-align   
                         form.atc-form(action="/cart", method="post")
                             button.add-to-cart Add to Cart
-                            input(type="hidden", name="productId" value=(product.id))
+                            input(type="hidden", name="productId" value=(product._id))

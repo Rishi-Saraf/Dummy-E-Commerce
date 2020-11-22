@@ -9,10 +9,10 @@ block content
                         br
                         h1 #{product.title}
                         h3 #{product.price}
-                        h4 Qty : #{product.cartItem.qty}
+                        h4 Qty : #{product.qty}
                         br
                         form(action="/delete-cart", method="post")
-                                input(type="hidden" name="productId" value=product.id)
+                                input(type="hidden" name="productId" value=product._id)
                                 input(type="hidden" name="price" value=product.price)
                                 button(type="submit") Delete Product
                         br

@@ -1,5 +1,6 @@
 const productModel = require('../models/products')
-const userModel = require('../models/user')
+const mongoDb = require('mongodb')
+const objectId = mongoDb.ObjectId
 
 exports.getAddProduct = (req,res)=>{
     params = {
@@ -9,28 +10,23 @@ exports.getAddProduct = (req,res)=>{
     res.render('admin/edit-product.pug',params)
 }
 
-let prodClass = productModel.productClass
 
 exports.postAddProduct = (req,res)=>{
     var title = req.body.title;
     var price = req.body.price;
     var desc = req.body.desc;
     var image  = req.body.img;
-    req.user.createProduct(
-    {
-        title : title,
-        price : price,
-        desc : desc,
-        imageUrl : image
-    }
-    ).then(product=>{
+    var userId = req.user._id
+    const product = new productModel(title,price,desc,image,null,userId)
+    product.save()
+    .then(product=>{
         res.redirect('/')
     })
     .catch(err=>console.log(err))
     }
 
 exports.getAdminProduct = (req,res)=>{
-    req.user.getProducts()
+    productModel.fetchAll()
     .then(product=>{
             params = {
             path:"/admin/products",
@@ -48,19 +44,17 @@ exports.getEditProduct = (req,res)=>{
         if(!editMode){
             res.redirect('/')
         }
-        req.user
-        .getProducts({where : {id : productId}})
+        productModel.findById(productId)
         .then(products=>{
-                const product = products[0]
-                if(!product){
+                if(!products){
                     res.redirect('/')
                 }
-                {
+                else{
                     params = {
                         path:"",
                         title:"my products",
                         edit:editMode,
-                        product:product
+                        product:products
                     }
                     res.render('admin/edit-product.pug',params)
                 }
@@ -73,29 +67,18 @@ exports.postEditProduct = (req,res)=>{
     const desc = req.body.desc;
     const imageUrl = req.body.img;
     const prodId = req.body.productId
-    productModel.findByPk(prodId)
-    .then(product=>{
-        product.title = title;
-        product.price = price
-        product.desc = desc
-        product.imageUrl = imageUrl
-        return product.save()
-    })
-    .then(()=>{console.log("PRODUCT UPDATED!!!")
-            res.redirect('/admin/products')})
-    .catch(err=>console.log(err))
+    const product = new productModel(title,price,desc,imageUrl,new objectId(prodId))
+    product.save(
+        (()=>{
+            console.log("PRODUCT UPDATED!!!")
+            res.redirect('/admin/products')
+        }))
 }
 
 exports.deleteOneProduct = (req,res)=>{
     const productId = req.body.productId
-    productModel.findByPk(productId)
-    .then(product=>{
-        return product.destroy()
-    })
+    productModel.deleteById(productId)
     .then(result=>{
-        console.log("PRODUCT DESTROYED!!!!!!!!")
-        console.log("-------------------------")
-        console.log(result)
         res.redirect('/admin/products')
     })
     .catch(err=>console.log(err))

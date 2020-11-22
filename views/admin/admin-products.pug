@@ -15,10 +15,10 @@ block content
                     h4.price #{product.price} INR
                     p.description #{product.desc}
                     .buttons-horizontal-align   
-                        form(action=("/admin/edit-product/"+product.id), method="get")
+                        form(action=("/admin/edit-product/"+product._id), method="get")
                             button(type="submit" name="edit" value="true") Edit Product
                         form(action="/admin/delete", method="post")
-                            input(type="hidden", name="productId" value=product.id)
+                            input(type="hidden", name="productId" value=product._id)
                             button Delete Product
         else
             h1.error NO PRODUCTS
