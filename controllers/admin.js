@@ -17,7 +17,7 @@ exports.postAddProduct = (req,res)=>{
     var desc = req.body.desc;
     var image  = req.body.img;
     var userId = req.user._id
-    const product = new productModel(title,price,desc,image,null,userId)
+    const product = new productModel({title:title,desc:desc,price:price,imageUrl:image})
     product.save()
     .then(product=>{
         res.redirect('/')
@@ -26,7 +26,7 @@ exports.postAddProduct = (req,res)=>{
     }
 
 exports.getAdminProduct = (req,res)=>{
-    productModel.fetchAll()
+    productModel.find()
     .then(product=>{
             params = {
             path:"/admin/products",

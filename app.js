@@ -1,11 +1,12 @@
+const mongoose = require('mongoose')
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
-const mongoConnectFunc = require('./utils/database').mongoConnect
 
 const adminRoute = require('./routes/admin')
 const shopRoute = require('./routes/shop')
 const productRoute = require('./routes/product')
+const url = require('./url')
 
 const userModel = require("./models/user.js")
 // const product = require("./models/products.js")
@@ -39,11 +40,8 @@ app.use('',(req,res)=>{
     res.render('404.pug')
 })
 
-mongoConnectFunc(()=>{
-const user = userModel.findById("5fb52f49d3cd7d45feada4b6") 
-	if(!user){
-	}
-    app.listen(80,()=>{
-		console.log("APP STARTED")
-	})
+mongoose.connect(url,{ useNewUrlParser: true })
+.then(result=>{
+	app.listen(80)
 })
+.catch(err=>console.log(err))
