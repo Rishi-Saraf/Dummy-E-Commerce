@@ -16,7 +16,6 @@ exports.postAddProduct = (req,res)=>{
     var price = req.body.price;
     var desc = req.body.desc;
     var image  = req.body.img;
-    var userId = req.user._id
     const product = new productModel({title:title,desc:desc,price:price,imageUrl:image})
     product.save()
     .then(product=>{
@@ -67,12 +66,19 @@ exports.postEditProduct = (req,res)=>{
     const desc = req.body.desc;
     const imageUrl = req.body.img;
     const prodId = req.body.productId
-    const product = new productModel(title,price,desc,imageUrl,new objectId(prodId))
-    product.save(
-        (()=>{
-            console.log("PRODUCT UPDATED!!!")
-            res.redirect('/admin/products')
-        }))
+    productModel.findById(prodId)
+    .then(product=>{
+        product.title = title;
+        product.price = price;
+        product.desc = desc;
+        product.imageUrl = imageUrl;
+        return product.save()   
+    }
+    )
+    .then(product =>{
+        res.redirect("/admin/products");
+    })
+    .catch(err=>console.log(err))
 }
 
 exports.deleteOneProduct = (req,res)=>{

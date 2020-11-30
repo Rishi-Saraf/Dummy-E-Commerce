@@ -4,7 +4,7 @@ const productModel = require('../models/products')
 const userModel = require('../models/user')
 
 exports.Shop = (req,res)=>{
-    productModel.fetchAll()
+    productModel.find()
     .then(products=>{
         params = {
             prods : products,
