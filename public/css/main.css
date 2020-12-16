@@ -52,3 +52,8 @@ btn{
     width: 15%;
     margin: 10px auto;
 }
+
+.right-left-align{
+    display : flex;
+    justify-content: space-between;
+}

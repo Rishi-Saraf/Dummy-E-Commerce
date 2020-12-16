@@ -1,0 +1,19 @@
+extends ../layouts/main-layout.pug
+
+block css
+    link(rel="stylesheet", href="css/login.css")
+
+block content
+    div.loginContainer
+        form.loginForm(action="/signup", method="post")
+            input(type="hidden", name="_csrf" value=csrfToken)
+            label(for="email") Enter your email
+            input(type="text", name="email")
+            label(for="email") Enter your name
+            input(type="text", name="name") 
+            label(for="password") Enter you password
+            input(type="text", name="password")
+            label(for="password") Confirm you password
+            input(type="text", name="confirmPassword")
+            div.butn
+                button.btn(type="submit") Submit

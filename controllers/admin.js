@@ -4,8 +4,10 @@ const objectId = mongoDb.ObjectId
 
 exports.getAddProduct = (req,res)=>{
     params = {
+        isLoggedIn : req.session.user,
         path:"/admin/add-product",
-        title:"add product"
+        title:"add product",
+
     }
     res.render('admin/edit-product.pug',params)
 }
@@ -16,7 +18,8 @@ exports.postAddProduct = (req,res)=>{
     var price = req.body.price;
     var desc = req.body.desc;
     var image  = req.body.img;
-    const product = new productModel({title:title,desc:desc,price:price,imageUrl:image})
+    var userId = req.session.user;
+    const product = new productModel({title:title,desc:desc,price:price,imageUrl:image,user:userId})
     product.save()
     .then(product=>{
         res.redirect('/')
@@ -28,6 +31,7 @@ exports.getAdminProduct = (req,res)=>{
     productModel.find()
     .then(product=>{
             params = {
+            isLoggedIn : req.session.user,
             path:"/admin/products",
             title:"my products",
             prods:product,
@@ -50,6 +54,7 @@ exports.getEditProduct = (req,res)=>{
                 }
                 else{
                     params = {
+                        isLoggedIn : req.session.user,
                         path:"",
                         title:"my products",
                         edit:editMode,
@@ -83,7 +88,7 @@ exports.postEditProduct = (req,res)=>{
 
 exports.deleteOneProduct = (req,res)=>{
     const productId = req.body.productId
-    productModel.deleteById(productId)
+    productModel.findByIdAndRemove(productId)
     .then(result=>{
         res.redirect('/admin/products')
     })

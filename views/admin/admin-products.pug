@@ -17,8 +17,10 @@ block content
                     .buttons-horizontal-align   
                         form(action=("/admin/edit-product/"+product._id), method="get")
                             button(type="submit" name="edit" value="true") Edit Product
+                            input(type="hidden", name="_csrf" value=csrfToken)
                         form(action="/admin/delete", method="post")
                             input(type="hidden", name="productId" value=product._id)
                             button Delete Product
+                            input(type="hidden", name="_csrf" value=csrfToken)
         else
             h1.error NO PRODUCTS

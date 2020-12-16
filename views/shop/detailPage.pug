@@ -11,9 +11,10 @@ block content
                         img(src = (product.imageUrl) alt="An Image")
                     h2.title #{product.title}
                     h4.price #{product.price} INR
-                    p.description #{product.desc} 
-                    p Made by #{user.name}
-                    .buttons-horizontal-align   
-                        form.atc-form(action="/cart", method="post")
-                            button.add-to-cart Add to Cart
-                            input(type="hidden", name="productId" value=(product._id))
+                    p.description #{product.desc}
+                    if(isLoggedIn) 
+                        .buttons-horizontal-align   
+                            form.atc-form(action="/cart", method="post")
+                                button.add-to-cart Add to Cart
+                                input(type="hidden", name="productId" value=(product._id))
+                                input(type="hidden", name="_csrf" value=csrfToken)

@@ -11,12 +11,14 @@ block content
                     .prod-image
                         img(src = (product.imageUrl) alt="An Image")
                     h2.title #{product.title}
-                    h4.price #{product.price} INR
+                    h4.price ₹ #{product.price} 
                     p.description #{product.desc}
-                    .buttons-horizontal-align   
-                        form.atc-form(action="/cart", method="post")
-                            button.add-to-cart Add to Cart
-                            input(type="hidden", name="productId" value=product._id)
+                    .buttons-horizontal-align
+                        if(isLoggedIn)   
+                            form.atc-form(action="/cart", method="post")
+                                button.add-to-cart Add to Cart
+                                input(type="hidden", name="_csrf" value=csrfToken)
+                                input(type="hidden", name="productId" value=product._id)
                         a.detail(href=("/product/"+product._id)) Details
                         
         else

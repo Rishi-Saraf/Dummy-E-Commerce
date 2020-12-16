@@ -6,9 +6,9 @@ exports.Details = (req,res) => {
     productModel.findById(productId)
     .then(product=>{
         params = {
+            isLoggedIn : req.session.user,
             product:product,
-            title : product.title+" | "+product.price + " INR",
-            user : req.user
+            title : product.title+" | Shop",
         		}
         res.render('./shop/detailPage.pug',params)
         console.log(product)

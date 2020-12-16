@@ -7,18 +7,20 @@ block content
         if cartProducts.length > 0
                 for product in cartProducts
                         br
-                        h1 #{product.title}
-                        h3 #{product.price}
-                        h4 Qty : #{product.qty}
+                        h1 #{product.productId.title}
+                        h3 #{product.productId.price}
+                        h4 Qty : #{product.quantity}
                         br
                         form(action="/delete-cart", method="post")
-                                input(type="hidden" name="productId" value=product._id)
-                                input(type="hidden" name="price" value=product.price)
+                                input(type="hidden", name="_csrf" value=csrfToken)
+                                input(type="hidden" name="productId" value=product.productId._id)
+                                input(type="hidden" name="price" value=product.productId.price)
                                 button(type="submit") Delete Product
                         br
                         hr
                 br
                 form(method="POST" action="/create-order")
+                        input(type="hidden", name="_csrf" value=csrfToken)
                         button(type="submit") Order Now!!!
         else
                 h1 Nothing in cart currently...go get something

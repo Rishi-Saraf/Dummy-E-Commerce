@@ -1,0 +1,37 @@
+.loginForm{
+    display: flex;
+    flex-direction: column;
+    width : 24%;
+    margin : 15.5% auto 2% auto;
+}
+
+.loginForm *{
+    margin: 3px;
+}
+
+.btn {
+    width : fit-content;
+    padding: 6px 3px;
+    margin: 4px;
+}
+
+.butn{
+    display:flex;
+    justify-content: center;
+}
+
+.loginContainer{
+    height: 60vh;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.errorMessage{
+   color : white;
+   border : solid 2px rgb(116, 13, 13);
+   border-radius : 3%;
+   background-color: rgb(197,21,21);
+   padding : 0.3rem
+}
