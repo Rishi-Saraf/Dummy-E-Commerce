@@ -12,13 +12,13 @@ npm start
 
 The DataBase used is A NoSql DataBase i.e- MongoDB
 
-##Dependencies
+## Dependencies
 
--express
--csurf
--mongoose
--mongodb
--flash
--nodemon
--pug
--express-session
+- express
+- csurf
+- mongoose
+- mongodb
+- flash
+- nodemon
+- pug
+- express-session
