@@ -28,7 +28,7 @@ exports.postAddProduct = (req,res)=>{
     }
 
 exports.getAdminProduct = (req,res)=>{
-    productModel.find()
+    productModel.find({user:req.session.user._id})
     .then(product=>{
             params = {
             isLoggedIn : req.session.user,
@@ -73,6 +73,9 @@ exports.postEditProduct = (req,res)=>{
     const prodId = req.body.productId
     productModel.findById(prodId)
     .then(product=>{
+        if(product.user.toString()!==req.session.user._id.toString()){
+            return res.redirect('/')
+        }
         product.title = title;
         product.price = price;
         product.desc = desc;
@@ -88,7 +91,7 @@ exports.postEditProduct = (req,res)=>{
 
 exports.deleteOneProduct = (req,res)=>{
     const productId = req.body.productId
-    productModel.findByIdAndRemove(productId)
+    productModel.deleteOne({_id:productId,user:req.session.user._id})
     .then(result=>{
         res.redirect('/admin/products')
     })
