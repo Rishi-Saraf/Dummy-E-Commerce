@@ -1,6 +1,7 @@
 const productModel = require('../models/products')
 const mongoDb = require('mongodb')
 const objectId = mongoDb.ObjectId
+const fileUtil = require("../utils/file.js")
 
 exports.getAddProduct = (req,res)=>{
     params = {
@@ -17,9 +18,13 @@ exports.postAddProduct = (req,res)=>{
     var title = req.body.title;
     var price = req.body.price;
     var desc = req.body.desc;
-    var image  = req.body.img;
+    var image  = req.file.path;
     var userId = req.session.user;
+    if(!image){
+        return res.redirect('/admin/add-products')
+    }
     const product = new productModel({title:title,desc:desc,price:price,imageUrl:image,user:userId})
+    console.log(image)
     product.save()
     .then(product=>{
         res.redirect('/')
@@ -69,7 +74,7 @@ exports.postEditProduct = (req,res)=>{
     const title = req.body.title;
     const price = req.body.price;
     const desc = req.body.desc;
-    const imageUrl = req.body.img;
+    const image = req.file.path;
     const prodId = req.body.productId
     productModel.findById(prodId)
     .then(product=>{
@@ -79,7 +84,10 @@ exports.postEditProduct = (req,res)=>{
         product.title = title;
         product.price = price;
         product.desc = desc;
-        product.imageUrl = imageUrl;
+        if(image){
+            fileUtil.deleteFile(product.imageUrl)
+            product.imageUrl = image;
+        }
         return product.save()   
     }
     )
@@ -91,6 +99,10 @@ exports.postEditProduct = (req,res)=>{
 
 exports.deleteOneProduct = (req,res)=>{
     const productId = req.body.productId
+    productModel.findOne({_id:productId,user:req.session.user._id})
+    .then(product=>{
+        fileUtil.deleteFile(product.imageUrl)
+    })
     productModel.deleteOne({_id:productId,user:req.session.user._id})
     .then(result=>{
         res.redirect('/admin/products')

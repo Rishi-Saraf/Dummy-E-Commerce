@@ -1,22 +1,39 @@
-
+const fs = require("fs")
+const path = require("path")
 const Product = require('../models/products')
 const productModel = require('../models/products')
 const userModel = require('../models/user')
 const orderModel = require('../models/orders')
+const pdfDoc = require("pdfkit")
 
 exports.Shop = (req,res)=>{
-    productModel.find()
-    .then(products=>{
-        params = {
-            isLoggedIn : req.session.user,
-            prods : products,
-            path : '/',
-            title: 'shop'
+    ITEMS_PER_PAGE = 1
+    currentPage = req.query.page
+    productModel.countDocuments()
+    .then(numProds=>{
+        if(!currentPage){
+            currentPage = 1
         }
-        res.render('shop/index.pug',params)
-        console.log(products)
-    }
-    )
+        productModel.find()
+        .skip((currentPage-1)*ITEMS_PER_PAGE)
+        .limit(ITEMS_PER_PAGE)
+        .then(products=>{
+            params = {
+                isLoggedIn : req.session.user,
+                prods : products,
+                path : '/',
+                title: 'shop',
+                currentPage: currentPage,
+                lastPage: Math.ceil(numProds/ITEMS_PER_PAGE),
+                firstPage: 1,
+                hasNext: (ITEMS_PER_PAGE*currentPage)<numProds,
+                hasPrevious: currentPage>1,
+                isValid: currentPage<=Math.ceil(numProds/ITEMS_PER_PAGE),
+            }
+            res.render('shop/index.pug',params)
+        }
+        )
+    })
     .catch(
         err => console.log(err)
     )
@@ -107,4 +124,58 @@ exports.createCheckout = (req,res)=>{
         res.redirect('/checkout')
     })
     .catch(err=>console.error(err))
+}
+
+exports.getInvoice = (req,res,next)=>{
+    const orderId = req.params.invoiceId;
+    const invoiceName = "invoice-"+orderId+".pdf"
+    const invoicePath = path.join("invoice",invoiceName) 
+    const userName = req.session.user.name
+    orderModel.findById(orderId)
+    .then(order=>{
+        if(!order){
+            console.log("No Order like that exists")
+            return res.redirect('/')    
+        }
+        if(order.userId.toString()!==req.session.user._id.toString()){
+            console.log("Not authenticated")
+            return res.redirect('/')
+        }
+        // fs.readFile(invoicePath,(err,data)=>{
+            //     if (err){
+        //         console.error(err)
+        //     }
+        //     res.setHeader("Content-type","application/pdf")
+        //     res.setHeader("Content-disposition",'inline;filename="invoice-'+userName+'"')
+        //     res.send(data)
+        // })
+        const pdfDocument = new pdfDoc()
+        res.setHeader("Content-type","application/pdf")
+        res.setHeader("Content-disposition",'inline;filename="invoice-'+userName+'"')
+        pdfDocument.pipe(fs.createWriteStream(invoicePath))
+        pdfDocument.pipe(res)
+        pdfDocument.font("Times-Roman").fontSize(20).text("INVOICE",{
+            align: "center",
+            underline: true,
+            lineGap : 12
+        })
+        // pdfDocument.font("Times-Roman").text("-----------------------",{
+        //     align: "center"
+        // })
+        const intro = `The following are the items bought by you. Order Id : ${order._id}`
+        pdfDocument.font("Times-Roman").fontSize(18).text(intro,{
+            align: "center",
+            underline: true,
+            lineGap : 10
+        })
+        order.products.forEach(product=>{
+            pdfDocument.font("Times-Roman").fontSize(16).text(`Product:${product.product.title} | Quantity:${product.qty} |  Price:${product.product.price}`,{
+                height: 200,
+                width: 465,
+                align: "center"
+            })
+        })
+        pdfDocument.end()
+    })
+    .catch(err=>console.log(err))    
 }

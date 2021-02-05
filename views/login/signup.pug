@@ -8,13 +8,13 @@ block content
         form.loginForm(action="/signup", method="post" novalidate)
             input(type="hidden", name="_csrf" value=csrfToken)
             label(for="email") Enter your email
-            input(type="text", name="email")
+            input(type="text", name="email" value=oldInput?(oldInput.email?oldInput.email:''):'')
             label(for="name") Enter your name
-            input(type="text", name="name") 
+            input(type="text", name="name" value=oldInput?(oldInput.name?oldInput.name:''):'') 
             label(for="password") Enter you password
-            input(type="text", name="password")
-            label(for="password") Confirm you password
-            input(type="text", name="confirmPassword")
+            input(type="text", name="password" value=oldInput?(oldInput.password?oldInput.password:''):'')
+            label(for="confirmPassword") Confirm you password
+            input(type="text", name="confirmPassword" value=oldInput?(oldInput.confirmPw?oldInput.confirmPw:''):'')
             div.butn
                 button.btn(type="submit") Submit
             if(errorMessage)

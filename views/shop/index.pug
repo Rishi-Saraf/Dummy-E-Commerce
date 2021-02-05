@@ -9,7 +9,7 @@ block content
             each product in prods
                 .grid
                     .prod-image
-                        img(src = (product.imageUrl) alt="An Image")
+                        img(src = ("/"+product.imageUrl) alt="An Image")
                     h2.title #{product.title}
                     h4.price ₹ #{product.price} 
                     p.description #{product.desc}
@@ -20,6 +20,14 @@ block content
                                 input(type="hidden", name="_csrf" value=csrfToken)
                                 input(type="hidden", name="productId" value=product._id)
                         a.detail(href=("/product/"+product._id)) Details
-                        
+            if isValid
+                div.pages
+                    a(href="/?page=1") 1
+                    if hasPrevious
+                        a(href="/?page="+(+currentPage-1)) Prev
+                    if hasNext
+                        a(href="/?page="+(+currentPage+1)) Next
+                    a(href="/?page="+lastPage) Last
         else
             h1.error NO PRODUCTS
+    script(src="/js/main.js")
