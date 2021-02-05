@@ -7,7 +7,7 @@ block css
     link(rel='stylesheet' href='../../css/add-product.css')
 
 block content
-    form(id="main" action=edit==='true'?'/admin/edit-product':'/admin/add-product', method="post")
+    form(id="main" action=edit==='true'?'/admin/edit-product':'/admin/add-product', method="post", enctype="multipart/form-data")
         input(type="hidden", name="_csrf" value=csrfToken)
 
         label(for="title") Your Product's name
@@ -26,7 +26,7 @@ block content
 
 
         label(for="img") Enter The Image of your product
-        input(type="text" name="img" value=edit==="true"?product.imageUrl:"")
+        input(type="file" id="image" name="img" value=edit==="true"?product.imageUrl:"")
         
         if edit==="true"
             input(type="hidden", name="productId" value=product._id)

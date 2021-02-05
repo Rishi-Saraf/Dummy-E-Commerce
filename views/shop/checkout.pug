@@ -6,7 +6,7 @@ block content
     if orders.length>0
         for order in orders
             div.order
-                h2.orderId order id : # #{order._id}
+                h2.orderId order id : ##{order._id}
                 for product in order.products
                     div.order-product
                         h2 Title : #{product.product.title}
@@ -14,5 +14,7 @@ block content
                         p Price : #{product.product.price}
                         br 
                         p Quantity : #{product.qty}
+                div.invoice
+                    a(href="/invoice/"+order._id) Invoice
     else
         h2 No products

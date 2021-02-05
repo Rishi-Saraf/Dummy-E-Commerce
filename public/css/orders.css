@@ -20,3 +20,13 @@
 .order-product *{
     padding : 1px;
 }
+
+.invoice{
+    padding : 5px;
+    border: 2px solid orangered;
+}
+
+.invoice a {
+    text-decoration: none;
+    color: royalblue;
+}

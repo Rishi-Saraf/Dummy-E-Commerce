@@ -64,13 +64,19 @@ exports.postSignup = (req,res)=>{
     const name = req.body.name
     const email = req.body.email
     const password = req.body.password
-    const confirmPw = req.body.confirmPasswords
+    const confirmPw = req.body.confirmPassword
     let errors = validationResult(req)
     if(!errors.isEmpty()){
         const params = {
             title : 'signup',
             path : 'login',
-            errorMessage : errors.array()[0].msg
+            errorMessage : errors.array()[0].msg,
+            oldInput : {
+                email : email,
+                password : password,
+                name : name,
+                confirmPw : confirmPw
+            }
         }
         console.log(errors)
         return res.status(422).render('login/signup.pug',params)

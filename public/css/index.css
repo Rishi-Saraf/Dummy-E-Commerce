@@ -31,6 +31,8 @@
 .everything{
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
+
 }
 
 .detail{
@@ -42,5 +44,20 @@
 .detail:hover{
     background-color: white;
     color: crimson;
+}
+
+.pages{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px;
+    margin-bottom: 30px; 
+}
+
+.pages *{
+    padding: 5px;
+    border:solid 2px orangered;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 

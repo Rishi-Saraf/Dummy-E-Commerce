@@ -17,5 +17,7 @@ router.get('/checkout',isAuth,shopControl.getCheckout)
 
 router.post('/create-order',isAuth,shopControl.createCheckout)
 
+router.get("/invoice/:invoiceId",isAuth,shopControl.getInvoice)
+
 module.exports = router
 

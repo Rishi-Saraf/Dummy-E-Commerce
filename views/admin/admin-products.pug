@@ -10,7 +10,7 @@ block content
             each product in prods
                 .grid
                     .prod-image
-                        img(src = (product.imageUrl) alt="An Image")
+                        img(src = ('/'+product.imageUrl) alt="An Image")
                     h2.title #{product.title}
                     h4.price #{product.price} INR
                     p.description #{product.desc}
